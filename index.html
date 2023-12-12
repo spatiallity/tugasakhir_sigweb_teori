@@ -17,26 +17,24 @@
   <div id="cesiumContainer"></div>
   <script type="module">
 
-
     // Menambahkan token dari Cesium Ion
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYmQ5YzgxMC1mMTI0LTQxMjYtYTI5Mi0yNmVkYzE0ZGE3M2YiLCJpZCI6MTgwMTI4LCJpYXQiOjE3MDA3MDU1Mzd9.P_gEmjY7Hw-Hb4XdDNFs7X82NzvkHNrLrWKMAT9QyS0';
 
-    // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
+// Menambahkan terain sebagai basemap
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
     });    
-    
+// Menambahkan model 3D Colosseum sebagai tileset
     const tileset = viewer.scene.primitives.add(
       await Cesium.Cesium3DTileset.fromIonAssetId(2386462)
     );
-    
+
+// Menambahkan bangunan 3D dari OSM    
     // Add Cesium OSM Buildings.
     const buildingsTileset = await Cesium.createOsmBuildingsAsync();
     viewer.scene.primitives.add(buildingsTileset);
-    
-    
-    // STEP 4 CODE
-    // Hide individual buildings in this area using 3D Tiles Styling language.
+ 
+// Menghilangkan bangunan OSM yang berlokasi sama dengan model 3D Colosseum   
     buildingsTileset.style = new Cesium.Cesium3DTileStyle({
       // Create a style rule to control each building's "show" property.
       show: {
@@ -53,15 +51,9 @@
       color: "Boolean(${feature['cesium#color']}) ? color(${feature['cesium#color']}) : color('#ffffff')"
     });
 
-
-    // Fly the camera to San Francisco at the given longitude, latitude, and height.
-       // Move the camera so that the GeoJSON is in view.
+// Mengatur posisi kamera agar mengarah ke Model 3D Colosseum
     viewer.flyTo(tileset);
 
-
-    // Add Cesium OSM Buildings, a global 3D buildings layer.
-    // const buildingTileset = await Cesium.createOsmBuildingsAsync();
-    // viewer.scene.primitives.add(buildingTileset);   
   </script>
  </div>
 </body>
